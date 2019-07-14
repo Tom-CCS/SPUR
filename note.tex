@@ -1,0 +1,81 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+
+\usepackage{listings}
+\usepackage[
+nochapters, % Turn off chapters since this is an article        
+beramono, % Use the Bera Mono font for monospaced text (\texttt)
+pdfspacing, % Makes use of pdftex’ letter spacing capabilities via the microtype package
+dottedtoc % Dotted lines leading to the page numbers in the table of contents
+]{classicthesis} % The layout is based on the Classic Thesis style
+
+\usepackage{arsclassica} % Modifies the Classic Thesis package
+
+\usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+
+\usepackage[utf8]{inputenc} % Required for including letters with accents
+
+\usepackage{graphicx} % Required for including images
+\graphicspath{{Figures/}} % Set the default folder for images
+
+\usepackage{enumitem} % Required for manipulating the whitespace between and within lists
+
+\usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
+
+\usepackage{subfig} % Required for creating figures with multiple parts (subfigures)
+
+\usepackage{amsmath,amssymb,amsthm} % For including math equations, theorems, symbols, etc
+
+\usepackage{varioref} % More descriptive referencing
+\usepackage[mathscr]{euscript}
+\let\euscr\mathscr \let\mathscr\relax% just so we can load this and rsfs
+\usepackage[scr]{rsfso}
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+%----------------------------------------------------------------------------------------
+%	THEOREM STYLES
+%---------------------------------------------------------------------------------------
+
+\theoremstyle{definition} % Define theorem styles here based on the definition style (used for definitions and examples)
+\newtheorem{definition}{Definition}
+
+\theoremstyle{plain} % Define theorem styles here based on the plain style (used for theorems, lemmas, propositions)
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{prop}{Property}
+\title{Lemma 19 without auxillary tree}
+\begin{document}
+\maketitle
+\begin{lemma}[Lemma 19, J.P.]
+Let $G$ be a simple graph with average degree $d$; $l$ is any positive integer. For any edge $e$, let $T_e$ be the subgraph induced by vertices at most $l$ from $e$. Then there exists an edge $e$ such that $\lambda_1(T_e) \geq \frac{2l}{l+1}\sqrt{d-1}$.
+\end{lemma}
+\begin{proof}
+Assume $G$ has no degree 1 vertices. For this prove we split each edge into two directed edges of opposite direction; thus there are $dn$ directed edges in $G$. First fix an edge $e = {u_0v_0}$. We recursively define the non-backtracking distribution:
+$$p_0(e) = 1, p_0(e') = 0(e'\neq e)$$
+and for any edge $e = uv$ and integer $1\leq k\leq l$:
+$$p_k(uv) = \sum_{w\sim u, w\neq v} \frac{p_{k - 1}(wu)}{d(u) - 1}$$
+Finally, we consider the Rayleigh quotient of the vector $h = (P(v))_{v\in V}$, where
+$$P(v) = \sqrt{\sum_{k = 0}^l\sum_{u\sim v} p_k(uv)}$$
+As $p_k$ is a probability distribution for all $k$,
+$$h^th = l+1$$
+We now estimate $P(u)P(v)$ for all $u\sim v$. We have
+$$P(u)P(v) = \sqrt{ \sum_{k = 0}^l\sum_{w\sim u} p_k(wu) \sum_{k = 0}^l\sum_{w'\sim v} p_k(w'v)}$$
+splitting each summation into two parts,
+$$P(u)P(v) = \sqrt{ (\sum_{k = 0}^l\sum_{w\sim u, w\neq v} p_k(wu) + \sum_{k = 0}^lp_k(vu))(\sum_{k = 0}^lp_k(uv) + \sum_{k = 0}^l\sum_{w'\sim v, w'\neq u} p_k(w'v) })$$
+Now we use Cauchy-Schwarz inequality as follows. We match $p_k(vu)$ with $\sum_{w'\sim v, w'\neq u} p_{k-1}(w'v)$ for $1\leq k\leq l$, match $p_{k}(uv)$ with $\sum_{w\sim u, w\neq v} p_{k-1}(wu)$ for $1\leq k\leq l$, and discard the rest of the terms. Thus
+$$P(u)P(v) \geq \sum_{k = 1}^l \sqrt{p_{k}(uv)\sum_{w\sim u, w\neq v} p_{k-1}(wu)} + \sum_{k = 1}^l\sqrt{p_k(vu)\sum_{w'\sim v, w'\neq u} p_{k-1}(w'v)}$$
+Using the definition of $p_k(vu)$, then term-by-term Cauchy-Schwarz,
+$$p_{k}(uv)\sum_{w\sim u, w\neq v} p_{k-1}(wu) = \sum_{w\sim u, w\neq v} \frac{p_{k - 1}(wu)}{d(u) - 1}\sum_{w\sim u, w\neq v} p_{k-1}(wu) \geq (\sum_{w\sim u, w\neq v} \frac{p_{k - 1}(wu)}{\sqrt{d(u) - 1}})^2$$
+The same thing can be done for the other term. Thus,
+$$P(u)P(v) \geq \sum_{k = 1}^l\sum_{w\sim u, w\neq v} \frac{p_{k - 1}(wu)}{\sqrt{d(u) - 1}} + \sum_{k = 1}^l\sum_{w'\sim v, w'\neq u} \frac{p_{k - 1}(w'v)}{\sqrt{d(v) - 1}}$$
+Now, by symmetry,
+$$h^tAh = \sum_{u\sim v} P(u)P(v) \geq 2\sum_{u\sim v}\sum_{k = 1}^l\sum_{w\sim u, w\neq v} \frac{p_{k - 1}(wu)}{\sqrt{d(u) - 1}}$$
+Note that for each fixed $w,u$, the term $\frac{p_{k - 1}(wu)}{\sqrt{d(u) - 1}}$ is in the sum for all $v\sim u$, $v\neq w$. There is exactly $d(u) - 1$ of them. Thus,
+$$h^tAh \geq 2\sum_{k = 0}^{l-1}\sum_{w\sim u} p_k(wu)\sqrt{d(u) - 1}$$
+By definition,
+$$\lambda_1(T_e) \geq \frac{h^tAh}{h^th}\geq \frac{2\sum_{k = 0}^{l-1}\sum_{w\sim u} p_k(wu)\sqrt{d(u) - 1}}{l+1}$$
+Finally we take expectation over a uniform distribution over all possible $e$,
+$$\mathbb{E}(\lambda_1(T_e)) \geq \frac{2}{l+1}\sum_{k = 0}^{l-1}\sum_{w\sim u} \mathbb{E}(p_k(wu))\sqrt{d(u) - 1} = \frac{2l}{(l+1)dn}\sum_u d(u)\sqrt{d(u) - 1}$$
+as $\mathbb{E}(p_k(wu)) = \frac{1}{dn}$ for all $k$ and $wu$.
+\end{proof}
+\end{document}

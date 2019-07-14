@@ -1,0 +1,95 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+
+\usepackage{listings}
+\usepackage[
+nochapters, % Turn off chapters since this is an article        
+beramono, % Use the Bera Mono font for monospaced text (\texttt)
+pdfspacing, % Makes use of pdftex’ letter spacing capabilities via the microtype package
+dottedtoc % Dotted lines leading to the page numbers in the table of contents
+]{classicthesis} % The layout is based on the Classic Thesis style
+
+\usepackage{arsclassica} % Modifies the Classic Thesis package
+
+\usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+
+\usepackage[utf8]{inputenc} % Required for including letters with accents
+
+\usepackage{graphicx} % Required for including images
+\graphicspath{{Figures/}} % Set the default folder for images
+
+\usepackage{enumitem} % Required for manipulating the whitespace between and within lists
+
+\usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
+
+\usepackage{subfig} % Required for creating figures with multiple parts (subfigures)
+
+\usepackage{amsmath,amssymb,amsthm} % For including math equations, theorems, symbols, etc
+
+\usepackage{varioref} % More descriptive referencing
+\usepackage[mathscr]{euscript}
+\let\euscr\mathscr \let\mathscr\relax% just so we can load this and rsfs
+\usepackage[scr]{rsfso}
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+%----------------------------------------------------------------------------------------
+%	THEOREM STYLES
+%---------------------------------------------------------------------------------------
+
+\theoremstyle{definition} % Define theorem styles here based on the definition style (used for definitions and examples)
+\newtheorem{definition}{Definition}
+
+\theoremstyle{plain} % Define theorem styles here based on the plain style (used for theorems, lemmas, propositions)
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{prop}{Property}
+\begin{document}
+In this document we establish the following.
+
+\begin{theorem}
+For any $\epsilon > 0$, $D$, $\lambda>0$, there exists an $l$ such that, for $n$ sufficiently large, a connected graph $G$ on $n$ vertices with $\Delta(G) \leq D$ and $\lambda_1(T_{l,v}) < \lambda$ for all $v$ cannot have spectrum $\lambda_1, \lambda, \lambda \cdots\lambda,\cdots$, where there are at least $\epsilon n$ multiplicity of $\lambda$.
+\end{theorem}
+The main idea is to remove a few vertices and substantially decrease the local spectrum of $G$. We first describe how the removal is done. For any integer $k$, Define a \textbf{$k$-support} of a graph $H$ as a set of vertices $V_0$ such that any vertice of $H$ is at most distance $k$ from $V_0$. We have the following result:
+\begin{lemma}
+For any non-empty graph $H$ and its $k$-support $V_0$, let $H_1$ be the graph induced on vertices not in $V_0$. Then $\lambda_1(H_1)^k + \frac{1}{k^2\Delta(H)^k}\leq \lambda_1(H)^k$.
+\end{lemma}
+\begin{proof}
+We first establish the claim for $k=1$. We consider a new graph $H'$ as follows: for each vertice $v\in H_1$, we connect a vertice $h(v)$ of degree 1 to it(for example, this turns a cycle into a closed quipu). Then by $1$-support, there exists a homomorphism from $H'$ to $H$ that is identity on $H_1$ and maps each $h(v)$ to a vertice in $V_0$. Thus $\lambda_1(H') \leq \lambda_1(H)$. Furthermore, for any eigenvector $\phi: V(H_1) \to \mathbb{R}$ corresponding to eigenvalue $\lambda \leq \Delta(H_1) \leq \Delta(H) - 1$, we can extend this assignment to $\phi(h(v)) = \frac{\phi(v)}{\Delta(H)}$. It is easy to verify that this assignment increase the Rayleigh Quotient by at least $\frac{1}{\Delta(H)}$. Thus we get
+$$\lambda_1(H) \geq \lambda_1(H') \geq \lambda_1(H_1) + \frac{1}{\Delta(H)}$$
+Now we switch to the general case. If $A$ is the adjacency matrix of $H$, let $H^k$ denote the (non-simple) graph obtained by the adjacency matrix $A + A^2 + \cdots + A^k$. It is clear that $\Delta(H^k) \leq \sum_{i=1}^k\Delta(H)^i \leq k\Delta(H)^k$ and $\lambda_1(H^k) = \sum_{i=1}^k\lambda_1(H^i)$. Furthermore, $V_0$ is now a 1-support of $H^k$(the previous proof does not change for non-simple graphs). Finally, we note that $H_1^k$ is a subgraph of the induced subgraph in $H^k$ on vertices not in $V_0$. Thus,
+$$\sum_{i=1}^k\lambda_1(H_1)^i  + \frac{1}{k\Delta(H)^k} \leq \sum_{i=1}^k\lambda_1(H)^i$$
+from this the conclusion became obvious.
+\end{proof}
+Furthermore, $k$-support are easy to get.
+\begin{lemma}
+For any $\delta > 0$ and $\Delta$, there exists an $l = l(\delta, \Delta)$ such that for any connected graph $G$ on $n$ vertices with max. degree at most $\Delta$, there exists an $l$-support with at most $\delta n$ vertices.
+\end{lemma}
+\begin{proof}
+Every connected graph has a spanning tree; therefore we need only to consider trees. Trees of bounded degrees form a hyperfinite family; therefore there exists an $l$ such that we can remove $\delta n$ vertices $V$ and break the tree into components of size at most $l$. $V$ is automatically an $l$-support.
+\end{proof}
+We also need a lower bound.
+\begin{lemma}
+For any graph $G$, suppose $\lambda_i$ are its spectrum. Then for any positive integer $l$,
+$$\sum_{v\in V}\lambda_1(T_{l,v})^{2l} \geq \sum \lambda_i^{2l}$$
+\end{lemma}
+\begin{proof}
+For any vertice $v$ and $1\leq k\leq l$, we consider the assignment $\phi_k:V\to\mathbb{R}$ where $\phi_k(u)$ is the number of $k$-walks from $v$ to $u$. Then we have
+$$\lambda_1(T_{l,v})^2 \geq \frac{\sum_{uv}\phi_k(u)\phi_{k-1}(v)}{\sqrt{\sum_{u}\phi_k^2(u)}\sqrt{\sum_{v}\phi_{k-1}^2(v)}}$$
+Note that every term here can be interpreted as the number of closed walks from $v$. Taking the product over $k$,
+$$\lambda_1(T_{l,v})^{2l} \geq P_{2l}(v)$$
+where $P_{2l}$ is the number of closed $2l$-walk from $v$. Summing over all $v$, and using the fact that $\sum_v P_{2l}(v) = \sum \lambda_i^{2l}$, we get the desired conclusion.
+\end{proof}
+Now we begin the final attack
+\begin{proof}[Proof of Theorem 1]
+We pick an absolute constant $l_1$ corresponding to $\delta = \frac{\epsilon}{2}$ in Lemma 2. For this $l_1$, we use $k = l_1$ in Lemma 1 and conclude that there exists an absolute constant $\lambda' < \lambda$ such that for any graph $H$ with $\Delta(H) < D$ and $\lambda_1(H) < \lambda$, after removing an $l$-support the resulting graph $H_1$ satisfies $\lambda_1(H_1) < \lambda'$. Now suppose a graph $G$ that contradicts Theorem 1 exists(we will determine $l$ later). We pick an $l_1$-support of $G$ of less than $\delta n$ vertices; call it $V$. Let $G_1$ be the graph induced by vertices of $G$ not in $V$. By Cauchy Interlacing, $G_1$ still has at least $\frac{\epsilon}{2}n$ multiplicity of $\lambda$ in its spectrum.
+
+Now for any $T_{{l - l_1},v}$ in $G'$, we consider the graph $T_1$ induced by $T_{{l - l_1},v}$ and all vertices on paths of length at most $l_1$ connecting vertices of  $T_{{l - l_1},v}$ to a vertice of $V$(in other words, we connect $T_{{l - l_1},v}$ to $V$ as efficiently as possible). $T_1$ is a subgraph of $T_{l,v}$ in $G$, and therefore $\lambda_1(T_1) < \lambda$. Furthermore, $V_0\cap V(T_1)$ is an $l_1$-support of $T_1$, and $T_{{l - l_1},v}$ in $G'$ is a subgraph of $T_1$ after removing $V_0\cap V(T_1)$. Thus $\lambda_1(T_{{l - l_1},v}) < \lambda'$. 
+
+Finally, plus this into Lemma 3, we get
+$$n \lambda'^{2l - 2l_1} \geq \frac{\epsilon n}{2}\lambda^{2l - 2l_1}$$
+i.e,
+$$(\frac{\lambda}{\lambda'})^{2l - 2l_1} \leq \frac{2}{\epsilon}$$
+This is a contradiction for sufficiently large $l$.
+\end{proof}{}
+
+\end{document}

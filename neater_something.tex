@@ -1,0 +1,177 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+
+\usepackage{listings}
+\usepackage[
+nochapters, % Turn off chapters since this is an article        
+beramono, % Use the Bera Mono font for monospaced text (\texttt)
+pdfspacing, % Makes use of pdftex’ letter spacing capabilities via the microtype package
+dottedtoc % Dotted lines leading to the page numbers in the table of contents
+]{classicthesis} % The layout is based on the Classic Thesis style
+
+\usepackage{arsclassica} % Modifies the Classic Thesis package
+
+\usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+
+\usepackage[utf8]{inputenc} % Required for including letters with accents
+
+\usepackage{graphicx} % Required for including images
+\graphicspath{{Figures/}} % Set the default folder for images
+
+\usepackage{enumitem} % Required for manipulating the whitespace between and within lists
+
+\usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
+
+\usepackage{subfig} % Required for creating figures with multiple parts (subfigures)
+
+\usepackage{amsmath,amssymb,amsthm} % For including math equations, theorems, symbols, etc
+
+\usepackage{varioref} % More descriptive referencing
+\usepackage[mathscr]{euscript}
+\let\euscr\mathscr \let\mathscr\relax% just so we can load this and rsfs
+\usepackage[scr]{rsfso}
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+%----------------------------------------------------------------------------------------
+%	THEOREM STYLES
+%---------------------------------------------------------------------------------------
+
+\theoremstyle{definition} % Define theorem styles here based on the definition style (used for definitions and examples)
+\newtheorem{definition}{Definition}
+
+\theoremstyle{plain} % Define theorem styles here based on the plain style (used for theorems, lemmas, propositions)
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{prop}{Property}
+\begin{document}
+In this document we establish the following.
+
+\begin{theorem}
+There exists an absolute constant $C>0$ with the following property:
+
+For any \textbf{connected} simple graph $G$, the multiplicity of the second eigenvalue of $G$ is at most $C\frac{n}{\log_\Delta\log_\Delta n}$, where $n = |V(G)|$ and $\Delta = \Delta(G)$ is the maximum degree of $G$.
+\end{theorem}
+In the following discussion, for any graph $G$ let $V(G)$ denote the vertices, $E(G)$ denote the edges, $\lambda_1(G),\lambda_2(G)$ denote the first and second eigenvalue of $G$, and let $v_1(G)$ be the Perron-Frobenius eigenvector of $G$. For vertice $v$, let $N(v)$ denote its neighbors. For any integer $k > 0$, Define a \textbf{$k$-support} of a graph $H$ as a set of vertices $V_0$ such that any vertice $v$ of $G$ is at most distance $k$ from $V_0$(i.e. there exists a path of length at most $k$ that connects $v$ with a vertice in $V_0$). For vertice $v$ and positive integer $l$, let $T_{l,v}$ denote the subgraph induced by set of vertices at distance at most $l$ from $v$. For $\Delta \geq 2$, we can easily verify the relation $|V(T_{l,v})| \leq \Delta^l + 1$.
+\begin{lemma}
+For any non-empty graph $H$ and its $k$-support $V_0$, let $H_1$ be the graph induced on the vertices $V_1$ not in $V_0$. Then $\lambda_1(H_1)\leq \lambda_1(H) -  \frac{1}{\Delta(H)^{3k}}$.
+\end{lemma}
+\begin{proof}
+Let $v = v_1(H_1)$,$\Delta = \Delta(H)$ and $\lambda = \lambda_1(H_1)$. The theorem is trivial when $\Delta = 1$, so we assume $\Delta\geq 2$. We consider the following assignment $\phi:V(H) \to\mathbb{R}$:
+$$\phi(u) = v(u), u\in V_1$$
+$$\phi(u) = \frac{1}{\Delta}\sqrt{\sum_{u'\in N(u)\cap V_1}v(u')^2}, u\in V_0$$
+Then
+$$\phi^t\phi = \sum_{u\in V_1}v(u)^2 + \frac{1}{\Delta^2}\sum_{u\in V_0}\sum_{u'\in N(u)\cap V(H_1)}v(u')^2$$
+$$\phi^tA_H\phi \geq \sum_{(u_1,u_2)\in E(H_1)} v(u_1)v(u_2) + 2\sum_{(u_1,u_2)\in E(H),u_1\in V_0, u_2\in V_1}v(u_1)v(u_2)$$
+By definition, we know that 
+$$\sum_{(u_1,u_2)\in E(H_1)} v(u_1)v(u_2) = \lambda\sum_{u\in V_1}v(u)^2 $$
+Furthermore,
+$$\sum_{(u_1,u_2)\in E(H),u_1\in V_0, u_2\in V_1}v(u_1)v(u_2) = \sum_{u_1\in V_0}v(a u_1)\sum_{u_2\in V_1\cap N(u_1)}v(u_2)\geq  \sum_{u_1\in V_0}\Delta v(u_1)^2$$
+Finally, for each $u\in V_1$ we associate with it a nearest $u'\in V_0$. Let $u, h_1,h_2,\cdots, h_{l-1}, h_l = u'(l\leq k)$ be the path connecting these two vertices. Then, as $h_i \in H_1$ for all $i \leq {l-1}$, by definition of Perron-Frobenius eigenvector,
+$$v(u) \leq\lambda v(h_1) \leq \lambda^2v(h_2) \leq \cdots \leq \lambda^{k-1}v(h_{l-1})$$
+which implies, as $\lambda \leq \Delta$,
+$$\phi(u) \leq \Delta^{k-1}v(h_{l-1}) \leq \Delta^k\phi(u')$$
+Furthermore, each vertice $u'\in V_0$ is associated with at most $|T_{k,u'}| - 1 \leq \Delta^k$ vertices in $V_1$. Thus
+$$\sum_{u\in V_0}v(u)^2 \geq \frac{1}{\Delta^{3k}}\sum_{u\in V_1}v(u)^2$$
+Summing up,
+$$\frac{\phi^tA_H\phi}{\phi^t\phi} \geq \frac{\lambda\sum_{u\in V_1}v(u)^2+2\Delta\sum_{u\in V_0}v(u)^2}{\sum_{u\in V_1}v(u)^2+\sum_{u\in V_0}v(u)^2}$$
+therefore,
+$$\lambda_1(H) \geq \frac{\phi^tA_H\phi}{\phi^t\phi} \geq \frac{\lambda + \frac{2\Delta}{\Delta^{3k}} }{1+\frac{1}{\Delta^{3k}}} \geq \lambda + \frac{1}{\Delta^{3k}}$$
+\end{proof}
+\clearpage
+\begin{lemma}
+For any $l\geq 1$ and any \textbf{connected} graph $G$ on $n$ vertices, there exists an $l$-support $V$ with at most $\frac{n}{l}+1$ vertices.
+\end{lemma}
+\begin{proof}
+Every connected graph has a spanning tree; therefore we only need to prove this for any tree $T$. We iterate the following: pick an arbitrary vertice $v$ and divide the tree into levels based on distance from $v$. If the tree has at most $l$ levels, then $\{v\}$ is an $l$-support and we are done. Otherwise, we find the deepest vertice and consider its parent $v_0$ $l$ levels up. Clearly $v_0$ is at most distance $l$ from any of its children. We add $v_0$ to $V$, then remove $v_0$ and its children. As $v_0$ has at least $l$ children, we have decreased $n$ by at least $l$; furthermore, the graph remains a tree. Repeating this operation, we get the desired $V$.
+\end{proof}
+\begin{lemma}
+For any graph $G$, let $V = V(G)$ and $\lambda_i$ be its eigenvalues. Then for any positive integer $l$,
+$$\sum_{v\in V}\lambda_1(T_{l,v})^{2l} \geq \sum_i \lambda_i^{2l}$$
+\end{lemma}
+\begin{proof}
+For any vertice $v$ and $1\leq k\leq l$, we consider the assignment $\phi_k:V\to\mathbb{R}$ where $\phi_k(u)$ is the number of $k$-walks from $v$ to $u$. We observe the following relation for $k\geq 1$:
+$$\phi_k(u) = \sum_{v\in N(u)} \phi_{k-1}(v)$$
+Furthermore, for all $k \leq l$, $\phi_k$ is supported in $T_{l,v}$. Thus, for all $1\leq k\leq l$,
+$$\lambda_1(T_{l,v}) \geq \frac{\phi_k^tA\phi_{k-1}}{\norm{\phi_k}\norm{\phi_{k-1}}}$$
+where $A$ is the adjacency matrix of $G$. Expanding,
+$$\lambda_1(T_{l,v}) \geq \frac{\sum_{(u,v)\in E} \phi_k(u)\phi_{k-1}(v)}{\norm{\phi_k}\norm{\phi_{k-1}}}$$
+Moreover,
+$$\sum_{(u,v)\in E} \phi_k(u)\phi_{k-1}(v) = \sum_{u}\phi_k(u)\sum_{v\in N(u)} \phi_{k-1}(v) = \sum_{u}\phi_k(u)^2 = \norm{\phi_k}^2$$
+Thus,
+$$\lambda_1(T_{l,v}) \geq \frac{\norm{\phi_k}}{\norm{\phi_{k-1}}}$$
+Taking the product for $k = 1,2,\cdots, l$, and noting $\norm{\phi_0} = 1$,
+$$\lambda_1(T_{l,v})^{2l} \geq \norm{\phi_l}^2 = \sum_{u}\phi_l(u)^2$$
+On the other hand, note that $\sum_{u}\phi_k(u)^2$ is exactly the number of $2l$-closed walks from $v$. Thus, the sum
+$$\sum_{v\in V}\lambda_1(T_{l,v})^{2l}$$
+is at least the total number of $2l$-closed walks of $G$, which is equal to $\sum_i \lambda_i^{2l}$.
+\end{proof}
+\clearpage
+Now we begin the final attack. 
+\begin{proof}[Proof of Theorem 1]
+Pick two positive integers $l_1, l_2$(determined at the end of the proof), and let $l = l_1 + l_2$. Let $\lambda$ be the second eigenvalue of $G$.
+
+\textbf{Case 1}: Suppose there exists a $v\in V(a G)$ such that $\lambda_1(T_{v, l}) > \lambda$. Then the subgraph induced by vertices not in $T_{v, l + 1}$ has spectral radius less than $\lambda$(***), so by Cauchy interlacing, the multiplicity of $\lambda$ in $G$ is at most the multiplicity of $\lambda$ in $T_{v, l_1 + 1}$, which is at most $|V(T_{v, l + 1})| \leq 2\Delta^{l+1}$.
+
+\textbf{Case 2}: Suppose for all $v\in V(G)$, $\lambda_1(T_{v, l}) \leq \lambda$. We pick an $l_1$-support $V$ of $G$ of size at most $\frac{n}{l_1} + 1$. Let $G'$ be the graph induced on the vertices not in $V$.
+
+Now for any $v\in V(G')$, we estimate $\lambda_1(T_{l_2,v})$. We consider the graph $T_1$ induced by $T_{l_2,v}$ and all vertices on paths of length at most $l_1$ connecting vertices of  $T_{{l_2},v}$ to a vertice of $V$(in other words, we connect $T_{l_2,v}$ to $V$ as efficiently as possible). $T_1$ is a subgraph of $T_{l,v}$ in $G$, and therefore $\lambda_1(T_1) < \lambda$. Furthermore, $V_0\cap V(T_1)$ is an $l_1$-support of $T_1$, and $T_{l_2,v}$ in $G'$ is a subgraph of $T_1$ after removing $V_0\cap V(T_1)$. Thus $\lambda_1(T_{l_2,v}) < \lambda - \frac{1}{\Delta^{3l_1}}$. 
+
+Let $k$ be the multiplicity of $\lambda$ in $G'$. Using Lemma 3,
+$$n(\lambda - \frac{1}{\Delta^{3l_1}})^{2l_2} \geq k\lambda^{2l_2}$$
+i.e,
+$$k \leq (1 - \frac{1}{\lambda\Delta^{3l_1}})^{2l_2}n \leq (1 - \frac{1}{\Delta^{3l_1+1}})^{2l_2}n$$
+because $\lambda \leq \Delta$. By Cauchy interlacing, the multiplicity of $\lambda$ in $G$ is at most
+$$k + \frac{n}{l_1} + 1 \leq ((1 - \frac{1}{\Delta^{3l_1+1}})^{2l_2} + \frac{1}{l_1})n + 1$$
+
+Summing up the two cases, the multiplicity of $\lambda$ in $G$ is at most
+$$\max(2\Delta^{l_1+l_2+1}, ((1 - \frac{1}{\Delta^{3l_1+1}})^{2l_2} + \frac{1}{l_1})n + 1, n)$$
+Picking $l_1 = \frac{1}{10}\log_{\Delta}\log_{\Delta}n$ and $l_2 = \frac{1}{2}\log_{\Delta}n - 2l_1$ completes the proof.
+\end{proof}
+\begin{proof}[Proof of ***]
+Suppose the contrary; let $\phi_1 = v_1(G)$, $\phi_2 = v_1(T_{l,v})$, and $\phi_3$ be the Perron-Frobenius eigenvector of the subgraph induced by vertices not in $T_{v, l + 1}$. As all three are positive vectors, there exists a $c$ such that
+$$\phi_1^t\phi_2 + c\phi_1^t\phi_3 = 0$$
+Let $\phi:G\to\mathbb{R}$ be the assignment
+$$\phi(v) = \phi_2(v)(v\in T_{v, l}), \phi(v) = 0(v\in T_{v, l + 1}\backslash T_{v, l}), \phi(v) = c\phi_3(v)(\text{otherwise})$$
+Then $\phi$ is orthogonal to $\phi_1$, and the Rayleigh Quotient
+$$\frac{\phi^tA_G\phi}{\phi^t\phi} = \frac{\phi_2^tA_{T_{v, l}}\phi_2 + c^2\phi_3^tA_{G\backslash T_{v, l + 1}}\phi_3}{\phi_2^t\phi_2 + c^2\phi_3^t\phi_3}$$
+As $\phi_2^tA_{T_{v, l}}\phi_2 > \lambda\phi_2^t\phi_2$, $\phi_3^tA_{G\backslash T_{v, l + 1}}\phi_3 \geq \lambda \phi_3^t\phi_3$, the Rayleigh Quotient is larger than $\lambda$, which is a contradiction.
+\end{proof}
+Note: Cauchy interlacing theorem implies that if $V$ is a set of $a$ vertices of $G$, and the multiplicity of $\lambda$ in $G\backslash V$ is $b$, then the multiplicity of $\lambda$ in $G$ is at most $a+b$.
+\clearpage
+We now see how the proof solves the equiangular line problem.
+\begin{theorem}
+For any $\lambda > 0$ with $k(\lambda)\neq \infty$ and sufficiently large $n$, if $G$ is a simple graph on $n$ vertices such that $\lambda I - A_G + \frac{1}{2}J$ is positive semidefinite, then the corank(dimension of null space) of $\lambda I - A_G + \frac{1}{2}J$ in $A_G$ is at most $\frac{1}{k(\lambda)}n$. If $k(\lambda) = \infty$, then the multiplicity of $\lambda$ in $G$ is $o(n)$.
+\end{theorem}
+We prove an earlier result first
+\begin{lemma}
+    For all $\lambda>0$, if $G$ is a graph such that $\lambda I - A_G + \frac{1}{2}J$ is positive semidefinite, then there exists an absolute constant $\Delta = \Delta(\lambda)$ such that there always exist a way to switch $G$ with the resulting graph having max. degree at most $\Delta$.
+\end{lemma}
+\begin{proof}
+We adapt the notation from J.P. Lemma 7 and Lemma 8, with $\lambda = \frac{1-\alpha}{2\alpha}$. Fix $t = t(\lambda)$ large enough to apply J.P. Lemma 8 on the claw $C_{\lambda^2+1}$. That is
+
+Any spherical $L(\alpha, t)$ code does not contain $C_{\lambda^2+1}$, i.e. the max. degree is at most $\lambda_1 = \lambda^2+1$.
+
+Given vertices $S\subset V(G)$, for all subset $A\subset S$, let $C_S(A)$ denote the vertices of $G$ that are adjacent to exactly the vertices $A$ is $S$. Then from J.P.Lemma 7 we know that:
+
+There exists an absolute constant $M_1(\lambda)$ such that, if $S$ is an independent set with at least $M_1$ vertices, then the graph induced on $C_{S}(\emptyset)$ is a spherical $L(\alpha, t)$-code, thus having max.degree at most $\lambda_1$.
+
+And,
+
+There exists an absolute constant $M_2(\lambda)$ such that by switching the vertices of $G$, we can ensure that the subgraph induced on a set $V_1$ of at least $|G| - M_2$ vertices is an spherical $L(\alpha, t)$-code.
+
+We start by doing this switching. Let $V_0 = V(G)\backslash V_1$; we have $|V_0| \leq M_2$. Now for each vertice of $|V_0|$, we switch it such that it is not adjacent to at least half of the vertices in $V_1$. We claim the resulting graph satisfies the lemma.
+
+We know that before the switching, the max. degree of the graph $G_1$ induced on $V_1$ is bounded by $\lambda_1$. The switching only affects edges involving vertices in $V_0$, so $G_1$ is unchanged. Thus the degree of any vertice in $V_1$ is still bounded by $\lambda_1 + |V_1| \leq \lambda_1+M_2$, which we denote by $\Delta_1$.
+
+Now any vertice $v_0$ in $V_0$ is not adjacent to at least $\frac{|V_0|}{2} \geq \frac{n-M_2}{2}$ vertices $V_a$ in $V_1$; as the graph induced on $V_a$ is a subgraph of $G_1$, thus having max.degree at most $\lambda_1$, we can find among $V_a$ an independent set of size at least $\frac{n-M_2}{2\lambda_1}$; in particular, if $n > 2\lambda_1M_1 + M_2$, then there exists an independent set $V_2\subset V_a$ with $M_1$ vertices. As we have just proved, the degree in $G$ of any vertice in $V_2$ is at most $\Delta_1$, so all but at most $M_1\Delta_1 + M_1$ vertices in $G$ belong to $C_{V_2}(\emptyset)$. Furthermore, by definition $v_0\in C_{V_2}(\emptyset)$. Thus, the degree of $v_0$ in $G$ is at most $M_1\Delta_1 + M_1 + \Delta(C_{V_2}(\emptyset)) \leq M_1\Delta_1 + M_1 + \lambda_1$. This is an absolute constant, thus the lemma is proved.
+\end{proof} 
+\begin{proof}[Proof of Theorem 2]
+We switch such that $\Delta(G) \leq \Delta$; switching does not change the rank of $\lambda I - A_G + \frac{1}{2}J$. Now let $C_1, C_2,\cdots, C_t$ be the connected components of $G$. If all their spectral radius are at most $\lambda$ then the multiplicity of $\lambda$ in $A_G$ must be at most $\frac{n}{k(\lambda)}$. Furthermore, we have
+$$\dim\ker (\lambda I - A_G + \frac{1}{2}J) \leq rank(J) + \dim(\ker(\lambda I - A_G)\cap\ker(J))$$
+
+We observe that $rank(J)=1$ and $\ker(\lambda I - A_G)\cap\ker(J) \neq \ker(\lambda I - A_G)$ due to the existence of the Perron-Frobbenius eigenvector. Thus,
+$$\dim\ker (\lambda I - A_G + \frac{1}{2}J) \leq \dim\ker (\lambda I - A_G)\leq \frac{n}{k(\lambda)}$$
+Otherwise, suppose $\lambda_1(C_1) > \lambda$. Then we immediately know that $\lambda_2(C_1) \leq \lambda$, and for all $i\geq 2$, $\lambda_1(C_i) < \lambda$. Thus the multiplicity of $\lambda$ in $G$ is equal to the multiplicity of $\lambda$ in $C_1$; this is non-zero only if $\lambda_2(C_1) = \lambda$. In this case, by Theorem 1, the multiplicity of $\lambda$ in $G$ is at most $C\frac{n}{\log_\Delta\log_\Delta n} = o(n)$, which implies that the corank of $\lambda I - A_G + \frac{1}{2}J$ is also $o(n)$.
+\end{proof}
+\end{document}
